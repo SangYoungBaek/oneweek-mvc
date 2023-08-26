@@ -46,9 +46,53 @@ public class RequestController {
     //  Content type: application/x-www-form-urlencoded
     // Body
     //  name=Robbie&age=95
+    // 쿼리스트링 방식
     @PostMapping("/form/param")
     @ResponseBody
     public String helloPostRequestParam(@RequestParam String name, @RequestParam int age) {
         return String.format("Hello, @RequestParam.<br> name = %s, age = %d", name, age);
     }
+
+    // [Request sample]
+    // POST http://localhost:8080/hello/request/form/model
+    // Header
+    //  Content type: application/x-www-form-urlencoded
+    // Body
+    //  name=Robbie&age=95
+    @PostMapping("/form/model")
+    @ResponseBody
+    public String helloRequestBodyForm(@ModelAttribute Star star) {
+        // star.nam 으로 하면 안되고 html form에서 전달해주는 form이름까지 같아야한다. name
+        //return String.format("Hello, @ModelAttribute.<br> (name = %s, age = %d) ", star.nam, star.age);
+        return String.format("Hello, @ModelAttribute.<br> (name = %s, age = %d) ", star.name, star.age);
+    }
+
+    // [Request sample]
+    // GET http://localhost:8080/hello/request/form/param/model?name=Robbie&age=95
+    @GetMapping("/form/param/model")
+    @ResponseBody
+    public String helloRequestParam(@ModelAttribute Star star) {
+        return String.format("Hello, @ModelAttribute.<br> (name = %s, age = %d) ", star.name, star.age);
+    }
+    // 주의해야할 점
+    // @ModelAttribute 로 받아올 때는 Setter 또는 생성자가 필요하다.
+//    @GetMapping("/form/parma/model")
+//    @ResponseBody
+//    public String helloRequestParam(Star star) {
+//        return String.format("Hello, @ModelAttribute.<br> (name = %s, age = %d) ", star.name, star.age);
+//    } // @ModelAttribute가 생략가능하다.
+
+
+    // [Request sample]
+    // POST http://localhost:8080/hello/request/form/json
+    // Header
+    //  Content type: application/json
+    // Body
+    //  {"name":"Robbie","age":"95"}
+    @PostMapping("/form/json")
+    @ResponseBody
+    public String helloPostRequestJson(@RequestBody Star star) {
+        return String.format("Hello, @RequestBody.<br> (name = %s, age = %d) ", star.name, star.age);
+    } // 젝슨라이브러리가 처리해준다.
+    // 마찬가지로 필드 이름을 꼭 맞춰줘야한다.
 }
